@@ -6,6 +6,8 @@ var bgTexture : Texture2D;
 private var param : float;
 private var screenText : String;
 private var shareText : String;
+private var openWindow : boolean;
+private var kiiScore : int[];
 
 function InitializeTexts() {
     var score = (FindObjectOfType(Scorekeeper) as Scorekeeper).GetScore();
@@ -31,7 +33,7 @@ function InitializeTexts() {
         highScore = score;
         PlayerPrefs.SetInt("highScore", score);
     }
-    Social.ReportScore(highScore, "jp.radiumsoftware.yamada.leaderboard.normalscore", function(result : boolean){});
+    KiiScore.Report("score", highScore);
 }
 
 function OnGameEnd() {
@@ -74,6 +76,29 @@ function OnGUI() {
             TwitterPlugin.ComposeTweetWithScreenshot(shareText, "http://keijiro.github.com/yamada");
         }
     }
+    
+	// Ranking button.
+    if (GUI.Button(Rect(0.35 * sw, 0.9 * sh, 0.1 * sw, 0.1 * sw), "", "leaderboard")) {
+		  if (!openWindow) {
+            KiiScore.Get("score", Sort.Asc, function(s) {
+                kiiScore = s;
+                openWindow = true;
+            });
+        } else {
+            openWindow = false;
+        }
+    }
+
+	if (openWindow) {
+	    
+	     GUI.Window(0, Rect(0.15 * sw, 0.2 * sh, 0.7 * sw, 0.6 * sh), function(id)
+	    {
+	         for (var i = 0; i < kiiScore.length; i++) {
+	             GUILayout.Label(String.Format("{0} - {1}", i, kiiScore[i]));
+	         }
+	    } , "ranging");
+	}
+
     // Text display.
     GUIUtility.ScaleAroundPivot(Vector2(1.0 / scale, 1.0 / scale), Vector2.zero);
     GUI.Label(Rect(0, sh * scale * 0.1, sw * scale, sh * scale * 0.8), screenText);

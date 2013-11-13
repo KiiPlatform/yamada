@@ -2,7 +2,8 @@
 
 var skin : GUISkin;
 var bgTexture : Texture2D;
-
+private var openWindow : boolean;
+private var kiiScore : int[];
 private var alpha = 1.0;
 
 private var stringTitle : String;
@@ -34,11 +35,27 @@ function OnGUI() {
 
     GUI.skin = skin;
 
-    if (Social.localUser.authenticated) {
-        if (GUI.Button(Rect(4, 4, 0.1 * sw , 0.1 * sw), "", "leaderboard")) {
-            Social.ShowLeaderboardUI();
+    if (GUI.Button(Rect(4, 4, 0.1 * sw , 0.1 * sw), "", "leaderboard")) {
+
+        if (!openWindow) {
+            KiiScore.Get("score", Sort.Asc, function(s) {
+                kiiScore = s;
+                openWindow = true;
+            });
+        } else {
+            openWindow = false;
         }
     }
+
+	if (openWindow) {
+	    
+	     GUI.Window(0, Rect(0.15 * sw, 0.2 * sh, 0.7 * sw, 0.6 * sh), function(id)
+	    {
+	         for (var i = 0; i < kiiScore.length; i++) {
+	             GUILayout.Label(String.Format("{0} - {1}", i, kiiScore[i]));
+	         }
+	    } , "ranging");
+	}
 
     GUIUtility.ScaleAroundPivot(Vector2(1.0 / scale, 1.0 / scale), Vector2(0, 0));
     GUI.Label(Rect(0, sh * scale * 0.5, sw * scale, sh * scale * 0.5), stringTitle);
