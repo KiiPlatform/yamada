@@ -23,7 +23,8 @@ function Update() {
 #if UNITY_IPHONE
     var input = Input.acceleration.x;
 #else
-    var input = -Input.acceleration.y;
+    var input = Input.acceleration.x;    
+//    var input = -Input.acceleration.y;
 #endif
     input = Mathf.Clamp(input / inputTrim, -1.0, 1.0);
     // Update the velocity toward the input value.
