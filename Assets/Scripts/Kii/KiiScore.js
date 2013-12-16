@@ -5,7 +5,7 @@ import KiiCorp.Cloud.Storage;
 public static function Init()
 {
     // Kii Cloud SDKの初期化
-    Kii.Initialize("b1194c83", "446f6c923449b33c592b88908bc84ad2", Kii.Site.JP);
+    Kii.Initialize("__APP_ID__", "__APP_KEY__", Kii.Site.JP);
 
     // ログイン
     var token : String = PlayerPrefs.GetString("KiiToken", null);
