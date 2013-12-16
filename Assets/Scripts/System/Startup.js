@@ -7,6 +7,8 @@ function Start() {
     Social.localUser.Authenticate(function(result : boolean){});
 #endif
 
+    KiiScore.Init();
+
     Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
     // Set the fintering mode of the GUI font to point-sampling.
