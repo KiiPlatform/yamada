@@ -8,9 +8,9 @@ private var screenText : String;
 private var shareText : String;
 private var openWindow : boolean;
 private var kiiScore : int[];
-
+private var score : int;
 function InitializeTexts() {
-    var score = (FindObjectOfType(Scorekeeper) as Scorekeeper).GetScore();
+    score = (FindObjectOfType(Scorekeeper) as Scorekeeper).GetScore();
     // Make text.
     if (Application.systemLanguage == SystemLanguage.Japanese) {
         screenText =
@@ -33,7 +33,7 @@ function InitializeTexts() {
         highScore = score;
         PlayerPrefs.SetInt("highScore", score);
     }
-    KiiScore.Report("score", highScore);
+    KiiScore.Report("score", score);
 }
 
 function OnGameEnd() {
@@ -78,9 +78,9 @@ function OnGUI() {
     }
     
 	// Ranking button.
-    if (GUI.Button(Rect(0.35 * sw, 0.9 * sh, 0.1 * sw, 0.1 * sw), "", "leaderboard")) {
+    if (GUI.Button(Rect(0.3 * sw, 0.9 * sh, 0.1 * sw, 0.1 * sw), "", "leaderboard")) {
 		  if (!openWindow) {
-            KiiScore.Get("score", Sort.Asc, function(s) {
+            KiiScore.Get("score", Sort.Desc, function(s) {
                 kiiScore = s;
                 openWindow = true;
             });
@@ -88,20 +88,14 @@ function OnGUI() {
             openWindow = false;
         }
     }
-
-	if (openWindow) {
-	    
-	     GUI.Window(0, Rect(0.15 * sw, 0.2 * sh, 0.7 * sw, 0.6 * sh), function(id)
-	    {
-	         for (var i = 0; i < kiiScore.length; i++) {
-	             GUILayout.Label(String.Format("{0} - {1}", i, kiiScore[i]));
-	         }
-	    } , "ranging");
-	}
-
     // Text display.
-    GUIUtility.ScaleAroundPivot(Vector2(1.0 / scale, 1.0 / scale), Vector2.zero);
-    GUI.Label(Rect(0, sh * scale * 0.1, sw * scale, sh * scale * 0.8), screenText);
+ 	GUIUtility.ScaleAroundPivot(Vector2(1.0 / scale, 1.0 / scale), Vector2.zero);
+	if (openWindow) {
+		var rankingTexts = Ranking.GetRankingText(score,kiiScore);
+	    GUI.Label(Rect(3, 7, sw * scale, sh * scale * 0.8) ,rankingTexts, "ranking");
+	}else{
+    	GUI.Label(Rect(0, sh * scale * 0.1, sw * scale, sh * scale * 0.8), screenText);
+    }
 }
 
 private static function GetRankName(rankNameArray : String[], score : float) : String {
