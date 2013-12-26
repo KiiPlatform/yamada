@@ -83,7 +83,7 @@ PlayerSettings:
   apiCompatibilityLevel: 2
   iPhoneStrippingLevel: 3
   iPhoneScriptCallOptimization: 1
-  ForceInternetPermission: 0
+  ForceInternetPermission: 1
   ForceSDCardPermission: 0
   CreateWallpaper: 0
   APKExpansionFiles: 0

@@ -38,7 +38,7 @@ function OnGUI() {
     if (GUI.Button(Rect(4, 4, 0.1 * sw , 0.1 * sw), "", "leaderboard")) {
 
         if (!openWindow) {
-            KiiScore.Get("score", Sort.Asc, function(s) {
+            KiiScore.Get("score", Sort.Desc, function(s) {
                 kiiScore = s;
                 openWindow = true;
             });
@@ -48,13 +48,10 @@ function OnGUI() {
     }
 
 	if (openWindow) {
-	    
-	     GUI.Window(0, Rect(0.15 * sw, 0.2 * sh, 0.7 * sw, 0.6 * sh), function(id)
-	    {
-	         for (var i = 0; i < kiiScore.length; i++) {
-	             GUILayout.Label(String.Format("{0} - {1}", i, kiiScore[i]));
-	         }
-	    } , "ranging");
+	        var rankingTexts = Ranking.GetRankingText(-1,kiiScore);
+	        GUIUtility.ScaleAroundPivot(Vector2(1.0 / scale, 1.0 / scale), Vector2.zero);
+	        GUILayout.Space(24);
+	        GUILayout.Label(rankingTexts, "ranking");
 	}
 
     GUIUtility.ScaleAroundPivot(Vector2(1.0 / scale, 1.0 / scale), Vector2(0, 0));
