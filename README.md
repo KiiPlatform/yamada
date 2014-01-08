@@ -19,3 +19,7 @@ while (CFRunLoopRunInMode(kCFRunLoopDefaultMode, kInputProcessingTime, TRUE) == 
 ```
 
 - Ship it!
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/KiiPlatform/yamada/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
